@@ -1,14 +1,41 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
-</head>
-<body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
-</body>
-</html>
+      <!DOCTYPE html>
+      <html lang="ko">
+      <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>한국 힙합 추천</title>
+          <link href='/style.css' rel='stylesheet'>
+      </head>
+      <body>
+         <header>
+             <h1>한국 힙합 추천</h1>
+         </header>
+     
+         <main>
+             <section id="hiphop-by-year">
+                 <!-- 2023 -->
+                 <section class="year-section">
+                     <h2>2023</h2>
+                     <div class="recommendation-list" id="year-2023"></div>
+                 </section>
+                 
+                 <!-- 2022 -->
+                 <section class="year-section">
+                     <h2>2022</h2>
+                     <div class="recommendation-list" id="year-2022"></div>
+                 </section>
+     
+                 <!-- 2021 -->
+                 <section class="year-section">
+                     <h2>2021</h2>
+                     <div class="recommendation-list" id="year-2021"></div>
+                 </section>
+             </section>
+         </main>
+     <footer>
+             <p>&copy; 2023 K-HipHop Box</p>
+         </footer>
+     
+         <script defer type="text/javascript" src="/main.js"></script>
+     </body>
+     </html>
