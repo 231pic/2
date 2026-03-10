@@ -1,37 +1,65 @@
-const koreanHipHopData = {
-    2023: [
-        { title: '파이팅 해야지', artist: '부석순 (SEVENTEEN)' },
-        { title: 'Smoke (Prod. Dynamicduo, Padi)', artist: '다이나믹 듀오' },
-        { title: 'I Don\'t Think That I Like Her', artist: 'Charlie Puth' },
-    ],
-    2022: [
-        { title: 'LOVE DIVE', artist: 'IVE (아이브)' },
-        { title: 'TOMBOY', artist: '(G)I-DLE' },
-        { title: 'That That (prod. & feat. SUGA of BTS)', artist: 'PSY' },
-    ],
-    2021: [
-        { title: 'Next Level', artist: 'aespa' },
-        { title: 'Butter', artist: 'BTS' },
-        { title: '신호등', artist: '이무진' },
-    ],
-};
-
-function displaySongsByYear() {
-    for (const year in koreanHipHopData) {
-        const container = document.getElementById(`year-${year}`);
-        if (container) {
-            const songs = koreanHipHopData[year];
-            songs.forEach(song => {
-                const item = document.createElement('div');
-                item.classList.add('recommendation-item');
-                item.innerHTML = `
-                    <h3>${song.title}</h3>
-                    <p>${song.artist}</p>
-                `;
-                container.appendChild(item);
-            });
-        }
+const photos = [
+    {
+        url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1000',
+        title: 'Serene Peaks',
+        category: 'Nature'
+    },
+    {
+        url: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=1000',
+        title: 'Morning Dew',
+        category: 'Landscape'
+    },
+    {
+        url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1000',
+        title: 'Forest Whispers',
+        category: 'Nature'
+    },
+    {
+        url: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&q=80&w=1000',
+        title: 'Crimson Sky',
+        category: 'Landscape'
+    },
+    {
+        url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1000',
+        title: 'Alpine Stillness',
+        category: 'Adventure'
+    },
+    {
+        url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=1000',
+        title: 'Golden Hour',
+        category: 'Architecture'
     }
+];
+
+function initGallery() {
+    const galleryGrid = document.getElementById('photo-gallery');
+    
+    if (!galleryGrid) return;
+
+    photos.forEach(photo => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item';
+        
+        photoItem.innerHTML = `
+            <img src="${photo.url}" alt="${photo.title}" loading="lazy">
+            <div class="photo-overlay">
+                <h3>${photo.title}</h3>
+                <p>${photo.category}</p>
+            </div>
+        `;
+        
+        galleryGrid.appendChild(photoItem);
+    });
 }
 
-displaySongsByYear();
+document.addEventListener('DOMContentLoaded', initGallery);
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});

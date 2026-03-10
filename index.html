@@ -1,41 +1,52 @@
-      <!DOCTYPE html>
-      <html lang="ko">
-      <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>한국 힙합 추천</title>
-          <link href='/style.css' rel='stylesheet'>
-      </head>
-      <body>
-         <header>
-             <h1>한국 힙합 추천</h1>
-         </header>
-     
-         <main>
-             <section id="hiphop-by-year">
-                 <!-- 2023 -->
-                 <section class="year-section">
-                     <h2>2023</h2>
-                     <div class="recommendation-list" id="year-2023"></div>
-                 </section>
-                 
-                 <!-- 2022 -->
-                 <section class="year-section">
-                     <h2>2022</h2>
-                     <div class="recommendation-list" id="year-2022"></div>
-                 </section>
-     
-                 <!-- 2021 -->
-                 <section class="year-section">
-                     <h2>2021</h2>
-                     <div class="recommendation-list" id="year-2021"></div>
-                 </section>
-             </section>
-         </main>
-     <footer>
-             <p>&copy; 2023 K-HipHop Box</p>
-         </footer>
-     
-         <script defer type="text/javascript" src="/main.js"></script>
-     </body>
-     </html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SÉUNGWON | Minimalist Photography</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">SÉUNGWON</div>
+            <ul class="nav-links">
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Capturing the <span>Essence</span> of Silence</h1>
+                <p>A curated collection of moments, light, and shadows.</p>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery">
+            <div class="gallery-grid" id="photo-gallery">
+                <!-- Photos will be injected here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 SÉUNGWON. All Rights Reserved.</p>
+            <div class="socials">
+                <a href="#">Instagram</a>
+                <a href="#">VSCO</a>
+                <a href="#">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
