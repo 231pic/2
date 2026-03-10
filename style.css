@@ -146,6 +146,81 @@ nav {
     letter-spacing: 1px;
 }
 
+/* Contact Section */
+.contact {
+    padding: 100px 60px;
+    background-color: #fcfcfc;
+    display: flex;
+    justify-content: center;
+}
+
+.contact-container {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.contact-container h2 {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.contact-container p {
+    color: var(--accent-color);
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transition: border-color var(--transition-speed);
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--text-color);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background-color: var(--text-color);
+    color: #fff;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: opacity var(--transition-speed);
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    opacity: 0.8;
+}
+
 /* Footer */
 footer {
     padding: 60px;
