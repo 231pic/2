@@ -168,8 +168,27 @@ nav {
 
 .contact-container p {
     color: var(--accent-color);
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font-size: 0.95rem;
+}
+
+.contact-social {
+    margin-bottom: 40px;
+}
+
+.contact-social a {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    border: 1px solid var(--text-color);
+    transition: all var(--transition-speed);
+}
+
+.contact-social a:hover {
+    background-color: var(--text-color);
+    color: #fff;
 }
 
 .form-group {
