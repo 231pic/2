@@ -1,40 +1,40 @@
-const photos = [
-    { id: 'photo-1', url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1000', title: 'Serene Peaks', category: 'Nature' },
-    { id: 'photo-2', url: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=1000', title: 'Morning Dew', category: 'Landscape' },
-    { id: 'photo-3', url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1000', title: 'Forest Whispers', category: 'Nature' },
-    { id: 'photo-4', url: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&q=80&w=1000', title: 'Crimson Sky', category: 'Landscape' },
-    { id: 'photo-5', url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1000', title: 'Alpine Stillness', category: 'Adventure' },
-    { id: 'photo-6', url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=1000', title: 'Golden Hour', category: 'Architecture' }
-];
+// 17장의 사진 데이터를 생성합니다. (파일명: pic (1).jpg ~ pic (17).jpg)
+const photos = [];
+for (let i = 1; i <= 17; i++) {
+    photos.push({
+        id: `photo-${i}`,
+        // 파일명에 공백과 괄호가 포함된 경우를 위해 URL 인코딩 처리를 고려합니다.
+        url: `pic (${i}).jpg`, 
+        title: `Archive ${String(i).padStart(2, '0')}`,
+        category: 'Exhibition'
+    });
+}
 
 let currentSlide = 0;
 let isGridMode = false;
 let slideInterval;
 
-/* 초기화 */
 function init() {
     initCursor();
     initPreloader();
     initGallery();
     initGuestbook();
+    initBGM(); // BGM 기능 초기화
     setViewMode('slider');
 }
 
-/* 커스텀 커서 */
 function initCursor() {
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
     });
-
     document.addEventListener('mouseover', (e) => {
         if (e.target.closest('.hovered-area')) {
             cursor.classList.add('hovered');
             cursor.innerText = 'View';
         }
     });
-
     document.addEventListener('mouseout', (e) => {
         if (e.target.closest('.hovered-area')) {
             cursor.classList.remove('hovered');
@@ -43,7 +43,6 @@ function initCursor() {
     });
 }
 
-/* 프리로더 */
 function initPreloader() {
     const preloader = document.getElementById('preloader');
     const progressText = document.getElementById('progressText');
@@ -62,18 +61,17 @@ function initPreloader() {
     }, 50);
 }
 
-/* 갤러리 생성 */
 function initGallery() {
     const track = document.getElementById('sliderTrack');
     track.innerHTML = '';
     
-    photos.forEach((photo, index) => {
+    photos.forEach((photo) => {
         const slide = document.createElement('div');
         slide.className = 'slide hovered-area';
         slide.innerHTML = `
             <div class="polaroid">
                 <div class="tape"></div>
-                <img src="${photo.url}" alt="${photo.title}" onload="this.classList.add('loaded')">
+                <img src="${encodeURIComponent(photo.url)}" alt="${photo.title}" onload="this.classList.add('loaded')">
                 <div class="polaroid-caption">${photo.title}</div>
             </div>
         `;
@@ -82,7 +80,6 @@ function initGallery() {
     });
 }
 
-/* 뷰 모드 전환 */
 window.setViewMode = function(mode) {
     const viewport = document.getElementById('viewport');
     const track = document.getElementById('sliderTrack');
@@ -113,7 +110,6 @@ window.setViewMode = function(mode) {
     }
 }
 
-/* 슬라이더 제어 */
 window.changeSlide = function(dir) {
     if (isGridMode) return;
     currentSlide = (currentSlide + dir + photos.length) % photos.length;
@@ -124,7 +120,6 @@ window.changeSlide = function(dir) {
 function updateSlider() {
     const track = document.getElementById('sliderTrack');
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    
     const slides = document.querySelectorAll('.slide');
     slides.forEach((s, i) => {
         if (i === currentSlide) s.classList.add('active');
@@ -141,7 +136,6 @@ function resetAutoSlide() {
     startAutoSlide();
 }
 
-/* 모달 제어 */
 window.openModal = function(id) {
     closeAllModals();
     document.getElementById(id).classList.add('active');
@@ -151,14 +145,13 @@ window.closeAllModals = function() {
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
 }
 
-/* 사진 상세 및 댓글 */
 function openPhotoDetail(photo) {
     const modal = document.getElementById('photoDetailModal');
     const img = document.getElementById('detailImg');
     const title = document.getElementById('detailTitle');
     const category = document.getElementById('detailCategory');
 
-    img.src = photo.url;
+    img.src = encodeURIComponent(photo.url);
     title.innerText = photo.title;
     category.innerText = photo.category;
     
@@ -176,11 +169,9 @@ function openPhotoDetail(photo) {
     }
 }
 
-/* 방명록 */
 function initGuestbook() {
     const form = document.getElementById('guestbook-form');
     const container = document.getElementById('guestbook-entries');
-    
     function render() {
         let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
         container.innerHTML = entries.map(e => `
@@ -191,7 +182,6 @@ function initGuestbook() {
             </div>
         `).reverse().join('');
     }
-
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('gb-name').value;
@@ -202,17 +192,26 @@ function initGuestbook() {
         form.reset();
         render();
     });
-
     render();
 }
 
-/* BGM (UI만) */
-const bgmAudio = document.createElement('audio'); // 오디오 객체 생성만 해둠
-const bgmToggle = document.getElementById('bgmToggle');
-let isPlaying = false;
-bgmToggle?.addEventListener('click', () => {
-    isPlaying = !isPlaying;
-    bgmToggle.innerText = isPlaying ? 'PAUSE SOUND' : 'PLAY SOUND';
-});
+// BGM 기능 구현
+function initBGM() {
+    const bgmAudio = new Audio('lofi.mp3');
+    bgmAudio.loop = true;
+    const bgmToggle = document.getElementById('bgmToggle');
+    let isPlaying = false;
+
+    bgmToggle?.addEventListener('click', () => {
+        if (isPlaying) {
+            bgmAudio.pause();
+            bgmToggle.innerText = 'PLAY SOUND';
+        } else {
+            bgmAudio.play();
+            bgmToggle.innerText = 'PAUSE SOUND';
+        }
+        isPlaying = !isPlaying;
+    });
+}
 
 document.addEventListener('DOMContentLoaded', init);
