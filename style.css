@@ -1,8 +1,8 @@
 * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
 :root {
-    --bg-color: #e2ddd3; /* 더 진하고 깊은 베이지 종이색 */
-    --text-primary: #2a2a2a;
+    --bg-color: #dfdbd2; /* 깊이감 있는 세련된 베이지 */
+    --text-primary: #222;
     --accent-beige: #8e8879;
     --glass-border: rgba(0, 0, 0, 0.08);
 }
@@ -14,16 +14,16 @@ body {
     overflow: hidden; 
 }
 
-/* 페이퍼 텍스처 레이어 (진한 구겨짐 질감) */
+/* 불규칙한 세련된 페이퍼 텍스처 */
 .film-grain { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     pointer-events: none; z-index: 1; 
-    /* 구겨진 종이와 섬유질 느낌을 위한 3중 중첩 */
     background-image: 
-        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), /* 구겨진 패턴 */
-        url("https://www.transparenttextures.com/patterns/paper-fibers.png"),  /* 종이 섬유 */
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
-    opacity: 0.6; /* 구겨짐을 더 잘 보이게 상향 */
+        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), /* 메인 구겨짐 */
+        url("https://www.transparenttextures.com/patterns/handmade-paper.png"), /* 불규칙한 섬유질 */
+        radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0%, transparent 50%), /* 미세한 얼룩감 1 */
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%); /* 미세한 광택감 */
+    opacity: 0.7;
     mix-blend-mode: multiply;
 }
 
@@ -78,7 +78,7 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
 .polaroid { 
     position: relative; background: #fdfdfd; 
     padding: 15px 15px 60px 15px; 
-    box-shadow: 0 25px 55px rgba(0,0,0,0.2); 
+    box-shadow: 0 25px 55px rgba(0,0,0,0.12); 
     border-radius: 2px; transition: transform 0.4s;
     width: 450px;
 }
@@ -88,7 +88,7 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
 
 .tape {
     position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-2deg);
-    width: 120px; height: 35px; background: rgba(215, 207, 180, 0.7); /* 테이프도 살짝 진하게 */
+    width: 120px; height: 35px; background: rgba(215, 207, 180, 0.6);
     clip-path: polygon(2% 0, 98% 5%, 100% 95%, 5% 100%, 0 95%);
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
@@ -100,10 +100,10 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
     gap: 100px 50px; transform: none !important; height: auto; 
 }
 .slider-track.grid-mode .slide { min-width: unset; height: auto; }
-.slider-track.grid-mode .slide:hover .polaroid { transform: scale(1.05) translateY(-10px); z-index: 10; box-shadow: 0 35px 70px rgba(0,0,0,0.25); }
+.slider-track.grid-mode .slide:hover .polaroid { transform: scale(1.05) translateY(-10px); z-index: 10; box-shadow: 0 35px 70px rgba(0,0,0,0.15); }
 
 /* 네비게이션 버튼 */
-.nav-btn { position: absolute; top: 50%; background: none; border: none; color: rgba(0,0,0,0.2); font-size: 2.5rem; transform: translateY(-50%); transition: 0.4s; padding: 20px; z-index: 20; }
+.nav-btn { position: absolute; top: 50%; background: none; border: none; color: rgba(0,0,0,0.1); font-size: 2.5rem; transform: translateY(-50%); transition: 0.4s; padding: 20px; z-index: 20; }
 .nav-btn:hover { color: var(--text-primary); transform: translateY(-50%) scale(1.2); }
 .prev-btn { left: 30px; }
 .next-btn { right: 30px; }
@@ -116,14 +116,14 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
 /* 모달 오버레이 */
 .modal-overlay { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(226, 221, 211, 0.95); /* 진해진 종이색 배경 */
-    backdrop-filter: blur(12px); 
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(223, 219, 210, 0.96); 
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
     z-index: 100; display: none; justify-content: center; align-items: center; 
 }
 .modal-overlay.active { display: flex; }
-.modal-content { text-align: center; max-width: 900px; width: 90%; color: var(--text-primary); }
-.modal-close { position: absolute; top: 40px; right: 60px; background: none; border: none; color: var(--text-primary); font-size: 3rem; cursor: pointer; opacity: 0.4; transition: 0.3s; }
+.modal-content { text-align: center; max-width: 1200px; width: 95%; color: var(--text-primary); position: relative; }
+.modal-close { position: absolute; top: -20px; right: 0; background: none; border: none; color: var(--text-primary); font-size: 3rem; cursor: pointer; opacity: 0.4; transition: 0.3s; z-index: 10; }
 .modal-close:hover { opacity: 1; transform: scale(1.1); }
 
 .info-card h2 { font-family: 'DM Serif Display', serif; font-size: 3.5rem; margin-bottom: 30px; letter-spacing: 5px; color: var(--text-primary); }
@@ -135,13 +135,46 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
 }
 .contact-btn:hover { background: var(--text-primary); color: #fff; }
 
-/* 상세 페이지 모달 */
-.detail-view .detail-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px; text-align: left; align-items: start; }
-.detail-photo-frame { position: relative; background: #fff; padding: 15px 15px 60px 15px; box-shadow: 0 25px 55px rgba(0,0,0,0.15); }
-.detail-photo-frame img { width: 100%; height: auto; }
-.detail-info h2 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; margin-bottom: 10px; }
-.detail-info p { color: #777; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; font-size: 0.8rem; }
-.disqus-wrapper { background: rgba(255,255,255,0.4); padding: 25px; border-radius: 4px; border: 1px solid var(--glass-border); }
+/* 상세 페이지 모달 밸런스 조정 (사진 대폭 확대) */
+.detail-view .detail-container { 
+    display: grid; 
+    grid-template-columns: 1.5fr 1fr; /* 사진 1.5 : 정보/댓글 1 비율로 조정 */
+    gap: 40px; 
+    text-align: left; 
+    align-items: center; 
+    background: transparent;
+}
+.detail-photo-frame { 
+    position: relative; 
+    background: #fff; 
+    padding: 15px 15px 60px 15px; 
+    box-shadow: 0 30px 70px rgba(0,0,0,0.1); 
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.detail-photo-frame img { 
+    width: 100%; 
+    max-height: 70vh; /* 사진의 최대 높이 제한을 늘려 크기 확보 */
+    object-fit: contain; 
+}
+.detail-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 80vh;
+}
+.detail-info h2 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; margin-bottom: 5px; }
+.detail-info p { color: #777; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-size: 0.85rem; }
+.disqus-wrapper { 
+    background: rgba(255,255,255,0.5); 
+    padding: 20px; 
+    border-radius: 4px; 
+    border: 1px solid var(--glass-border); 
+    flex-grow: 1;
+    overflow-y: auto; /* 댓글이 길어지면 내부 스크롤 */
+}
 
 /* 방명록 입력 폼 */
 .museum-form { margin-bottom: 40px; }
@@ -156,3 +189,8 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
 
 footer { padding: 80px 60px; text-align: center; z-index: 5; position: relative; }
 .footer-content p { font-size: 0.7rem; letter-spacing: 2px; color: #999; }
+
+@media (max-width: 1024px) {
+    .detail-view .detail-container { grid-template-columns: 1fr; }
+    .detail-photo-frame { max-height: none; }
+}
