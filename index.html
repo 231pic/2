@@ -39,11 +39,19 @@
             </div>
         </section>
 
-        <!-- Horizontal Polaroid Gallery -->
-        <section id="gallery" class="gallery-slider-section">
-            <div class="slider-container">
-                <div id="photo-gallery" class="photo-track">
-                    <!-- Polaroids will be injected and duplicated for infinite effect -->
+        <!-- Analog Gallery Container -->
+        <section id="gallery" class="analog-gallery-container reveal">
+            <div class="analog-controls">
+                <button class="analog-btn active" id="btnSlide" onclick="setAnalogMode('slide')">SLIDE</button>
+                <button class="analog-btn" id="btnBoard" onclick="setAnalogMode('board')">BOARD</button>
+            </div>
+
+            <button class="analog-nav-btn analog-prev" onclick="moveAnalogSlide(-1)">&#10092;</button>
+            <button class="analog-nav-btn analog-next" onclick="moveAnalogSlide(1)">&#10093;</button>
+
+            <div class="analog-viewport" id="analogViewport">
+                <div class="analog-track mode-slide" id="analogTrack">
+                    <!-- Polaroids will be injected here by JavaScript -->
                 </div>
             </div>
         </section>
