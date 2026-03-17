@@ -38,12 +38,20 @@ const photos = [
 ];
 
 function initGallery() {
-    const galleryGrid = document.getElementById('photo-gallery');
-    if (!galleryGrid) return;
+    const galleryTrack = document.getElementById('photo-gallery');
+    if (!galleryTrack) return;
 
-    photos.forEach(photo => {
+    // Create polaroid items (duplicated for infinite scroll)
+    const allPhotos = [...photos, ...photos]; // Double the array
+    
+    allPhotos.forEach((photo, index) => {
         const photoItem = document.createElement('div');
         photoItem.className = 'photo-item';
+        
+        // Random rotation for vintage look
+        const rotation = (Math.random() * 6 - 3).toFixed(2);
+        photoItem.style.setProperty('--rotation', `${rotation}deg`);
+        
         photoItem.innerHTML = `
             <img src="${photo.url}" alt="${photo.title}" loading="lazy">
             <div class="photo-overlay">
@@ -51,8 +59,9 @@ function initGallery() {
                 <p>${photo.category}</p>
             </div>
         `;
+        
         photoItem.addEventListener('click', () => openPhotoDetail(photo));
-        galleryGrid.appendChild(photoItem);
+        galleryTrack.appendChild(photoItem);
     });
 }
 
@@ -65,11 +74,8 @@ function openPhotoDetail(photo) {
     detailImg.src = photo.url;
     detailTitle.textContent = photo.title;
     detailCategory.textContent = photo.category;
-    detailSection.style.display = 'block';
+    detailSection.style.display = 'flex';
     
-    // Scroll to detail view
-    detailSection.scrollIntoView({ behavior: 'smooth' });
-
     // Reload Disqus for this specific photo
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
@@ -93,7 +99,6 @@ function initGuestbook() {
     const form = document.getElementById('guestbook-form');
     const entriesContainer = document.getElementById('guestbook-entries');
 
-    // Load existing entries
     let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
     
     function renderEntries() {
@@ -121,6 +126,14 @@ function initGuestbook() {
 
     renderEntries();
 }
+
+// Preloader handling
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    setTimeout(() => {
+        loader.classList.add('hidden');
+    }, 1500);
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     initGallery();

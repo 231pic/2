@@ -10,12 +10,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="loader" class="loader-wrapper">
+        <div class="loader-content">
+            <span class="loader-text">231</span>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div class="grain-overlay"></div>
+
     <header>
         <nav>
             <div class="logo">231</div>
             <ul class="nav-links">
                 <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#about">About</a></li>
                 <li><a href="#guestbook">Guestbook</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -30,7 +39,16 @@
             </div>
         </section>
 
-        <!-- Selected Photo Detail View (Hidden by default) -->
+        <!-- Horizontal Polaroid Gallery -->
+        <section id="gallery" class="gallery-slider-section">
+            <div class="slider-container">
+                <div id="photo-gallery" class="photo-track">
+                    <!-- Polaroids will be injected and duplicated for infinite effect -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Selected Photo Detail View -->
         <section id="photo-detail" class="photo-detail" style="display: none;">
             <div class="detail-container">
                 <button class="close-detail">&times; Close</button>
@@ -39,17 +57,11 @@
                     <div class="detail-info">
                         <h2 id="detail-title"></h2>
                         <p id="detail-category"></p>
+                        <div class="detail-comments">
+                            <div id="disqus_thread"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="detail-comments">
-                    <div id="disqus_thread"></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="gallery" class="gallery">
-            <div class="gallery-grid" id="photo-gallery">
-                <!-- Photos will be injected here by JavaScript -->
             </div>
         </section>
 
@@ -68,9 +80,7 @@
                     </div>
                     <button type="submit" class="submit-btn">방명록 남기기</button>
                 </form>
-                <div id="guestbook-entries" class="guestbook-entries">
-                    <!-- Guestbook entries will be injected here -->
-                </div>
+                <div id="guestbook-entries" class="guestbook-entries"></div>
             </div>
         </section>
 
@@ -78,17 +88,10 @@
             <div class="contact-container">
                 <h2>Partnership Inquiry</h2>
                 <p>제휴 및 협업 제안을 남겨주시면 검토 후 연락드리겠습니다.</p>
-                <div class="contact-social">
-                    <a href="https://www.instagram.com/231pic/" target="_blank">Instagram: @231pic</a>
-                </div>
                 <form action="https://formspree.io/f/mqeypbgy" method="POST">
                     <div class="form-group">
                         <label for="name">성함</label>
                         <input type="text" id="name" name="name" placeholder="성함을 입력해주세요" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="company">회사명/브랜드명</label>
-                        <input type="text" id="company" name="company" placeholder="회사명 또는 브랜드명을 입력해주세요">
                     </div>
                     <div class="form-group">
                         <label for="email">이메일 주소</label>
@@ -102,7 +105,6 @@
                 </form>
             </div>
         </section>
-
     </main>
 
     <footer>
@@ -111,7 +113,6 @@
             <div class="socials">
                 <a href="https://www.instagram.com/231pic/" target="_blank">Instagram</a>
                 <a href="#">VSCO</a>
-                <a href="#">Twitter</a>
             </div>
         </div>
     </footer>
