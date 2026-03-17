@@ -16,40 +16,40 @@ function initGallery() {
 
     galleryTrack.innerHTML = '';
     photos.forEach((photo) => {
-        const photoItem = document.createElement('div');
-        photoItem.className = 'photo-item';
+        const slide = document.createElement('div');
+        slide.className = 'analog-slide';
         
-        const rotation = (Math.random() * 6 - 3).toFixed(2);
-        photoItem.style.setProperty('--rotation', `${rotation}deg`);
-        
-        photoItem.innerHTML = `
-            <img src="${photo.url}" alt="${photo.title}" loading="lazy">
-            <div class="photo-overlay">
-                <h3>${photo.title}</h3>
-                <p>${photo.category}</p>
+        slide.innerHTML = `
+            <div class="analog-polaroid">
+                <div class="analog-tape"></div>
+                <img src="${photo.url}" alt="${photo.title}" onload="this.classList.add('loaded')">
+                <div class="analog-caption">${photo.title}</div>
             </div>
         `;
         
-        photoItem.addEventListener('click', () => openPhotoDetail(photo));
-        galleryTrack.appendChild(photoItem);
+        slide.querySelector('.analog-polaroid').addEventListener('click', () => openPhotoDetail(photo));
+        galleryTrack.appendChild(slide);
     });
 }
 
 window.setAnalogMode = function(mode) {
     currentMode = mode;
+    const viewport = document.getElementById('analogViewport');
     const track = document.getElementById('analogTrack');
     const btnSlide = document.getElementById('btnSlide');
     const btnBoard = document.getElementById('btnBoard');
     const navBtns = document.querySelectorAll('.analog-nav-btn');
 
-    track.className = `analog-track mode-${mode}`;
-    
     if (mode === 'slide') {
+        viewport.classList.remove('is-board');
+        track.classList.remove('is-board');
         btnSlide.classList.add('active');
         btnBoard.classList.remove('active');
         navBtns.forEach(btn => btn.style.display = 'block');
         updateSlidePosition();
     } else {
+        viewport.classList.add('is-board');
+        track.classList.add('is-board');
         btnBoard.classList.add('active');
         btnSlide.classList.remove('active');
         navBtns.forEach(btn => btn.style.display = 'none');
@@ -59,19 +59,16 @@ window.setAnalogMode = function(mode) {
 
 window.moveAnalogSlide = function(direction) {
     if (currentMode !== 'slide') return;
-    
     currentSlideIndex += direction;
-    if (currentSlideIndex < 0) currentSlideIndex = 0;
-    if (currentSlideIndex >= photos.length) currentSlideIndex = photos.length - 1;
-    
+    if (currentSlideIndex < 0) currentSlideIndex = photos.length - 1;
+    if (currentSlideIndex >= photos.length) currentSlideIndex = 0;
     updateSlidePosition();
 }
 
 function updateSlidePosition() {
     const track = document.getElementById('analogTrack');
-    const slideWidth = 350 + 60; // flex-basis + gap
-    const offset = -currentSlideIndex * slideWidth;
-    track.style.transform = `translateX(${offset}px)`;
+    const offset = -currentSlideIndex * 100;
+    track.style.transform = `translateX(${offset}%)`;
 }
 
 function openPhotoDetail(photo) {
@@ -134,7 +131,7 @@ window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     setTimeout(() => {
         loader.classList.add('hidden');
-    }, 1500);
+    }, 1200);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
