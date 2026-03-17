@@ -426,3 +426,98 @@ footer {
     font-size: 2.5rem;
     margin-bottom: 40px;
 }
+
+/* Photo Detail & Per-photo Comments */
+.photo-detail {
+    padding: 60px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.close-detail {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    color: var(--accent-color);
+}
+
+.detail-content {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 60px;
+    align-items: flex-start;
+}
+
+.detail-content img {
+    flex: 1;
+    max-width: 60%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.detail-info {
+    flex: 1;
+    text-align: left;
+}
+
+.detail-info h2 {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.detail-info p {
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+}
+
+.detail-comments {
+    padding-top: 40px;
+    border-top: 1px solid #eee;
+}
+
+/* Guestbook Entries */
+.guestbook-entries {
+    margin-top: 60px;
+    text-align: left;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gb-entry {
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.gb-entry strong {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.gb-entry p {
+    color: var(--text-color);
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.gb-entry small {
+    color: var(--accent-color);
+    font-size: 0.75rem;
+}

@@ -30,6 +30,23 @@
             </div>
         </section>
 
+        <!-- Selected Photo Detail View (Hidden by default) -->
+        <section id="photo-detail" class="photo-detail" style="display: none;">
+            <div class="detail-container">
+                <button class="close-detail">&times; Close</button>
+                <div class="detail-content">
+                    <img id="detail-img" src="" alt="">
+                    <div class="detail-info">
+                        <h2 id="detail-title"></h2>
+                        <p id="detail-category"></p>
+                    </div>
+                </div>
+                <div class="detail-comments">
+                    <div id="disqus_thread"></div>
+                </div>
+            </div>
+        </section>
+
         <section id="gallery" class="gallery">
             <div class="gallery-grid" id="photo-gallery">
                 <!-- Photos will be injected here by JavaScript -->
@@ -40,7 +57,7 @@
             <div class="guestbook-container">
                 <h2>Guestbook</h2>
                 <p>소중한 방문 소감을 남겨주세요.</p>
-                <form action="https://formspree.io/f/mqeypbgy" method="POST" class="guestbook-form">
+                <form id="guestbook-form" class="guestbook-form">
                     <div class="form-group">
                         <label for="gb-name">성함</label>
                         <input type="text" id="gb-name" name="name" placeholder="성함을 입력해주세요" required>
@@ -51,14 +68,8 @@
                     </div>
                     <button type="submit" class="submit-btn">방명록 남기기</button>
                 </form>
-            </div>
-        </section>
-
-        <section id="comments" class="comments">
-            <div class="comments-container">
-                <h2>Comments</h2>
-                <div class="disqus-container">
-                    <div id="disqus_thread"></div>
+                <div id="guestbook-entries" class="guestbook-entries">
+                    <!-- Guestbook entries will be injected here -->
                 </div>
             </div>
         </section>
@@ -106,14 +117,17 @@
     </footer>
 
     <script src="main.js"></script>
-<script>
-    (function() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://231pic.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <script>
+        var disqus_config = function () {
+            this.page.url = window.location.origin;
+            this.page.identifier = 'home';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://231pic.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
 </body>
 </html>
