@@ -408,3 +408,21 @@ footer {
     border: 1px solid #f0f0f0;
     background: #fafafa;
 }
+
+/* Comments Section */
+.comments {
+    padding: 100px 60px;
+    background-color: #fcfcfc;
+    text-align: center;
+}
+
+.comments-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.comments h2 {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
