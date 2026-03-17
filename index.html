@@ -3,127 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>231 | Minimalist Photography</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <title>231PIC | Exhibition</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Preloader -->
-    <div id="loader" class="loader-wrapper">
-        <div class="loader-content">
-            <span class="loader-text">231</span>
-            <div class="loader-bar"></div>
+    <div class="film-grain"></div>
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- 로딩 스크린 -->
+    <div id="preloader">
+        <div class="loader-logo">231PIC</div>
+        <div class="loader-line"></div>
+        <div class="loader-progress" id="progressText">00</div>
+    </div>
+
+    <!-- BGM 플레이어 (UI 유지) -->
+    <div class="bgm-player">
+        <span class="bgm-btn" style="opacity: 0.3; cursor: default;">LO-FI VIBE</span>
+        <div class="bgm-line"></div>
+        <button class="bgm-btn hovered-area" id="bgmToggle">PLAY SOUND</button>
+    </div>
+
+    <nav>
+        <div class="logo hovered-area" onclick="closeAllModals()">231PIC</div>
+        <div class="menu">
+            <button class="nav-link hovered-area" onclick="openModal('aboutModal')">About</button>
+            <button class="nav-link hovered-area" onclick="openModal('guestbookModal')">Guestbook</button>
+            <button class="nav-link hovered-area" onclick="openModal('contactModal')">Contact</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- 뷰 컨트롤러 -->
+        <div class="view-controls">
+            <button class="view-btn active hovered-area" id="btnSlider" onclick="setViewMode('slider')">SLIDE</button>
+            <button class="view-btn hovered-area" id="btnGrid" onclick="setViewMode('grid')">BOARD</button>
+        </div>
+
+        <!-- 네비게이션 버튼 (슬라이드 모드 전용) -->
+        <button class="nav-btn prev-btn hovered-area" id="prevBtn" onclick="changeSlide(-1)">&#10092;</button>
+        <button class="nav-btn next-btn hovered-area" id="nextBtn" onclick="changeSlide(1)">&#10093;</button>
+
+        <div class="slider-viewport" id="viewport">
+            <div class="slider-track" id="sliderTrack">
+                <!-- 폴라로이드 사진들이 JS로 주입됩니다 -->
+            </div>
+        </div>
+    </main>
+
+    <!-- 사진 상세 및 댓글 모달 -->
+    <div id="photoDetailModal" class="modal-overlay">
+        <button class="modal-close hovered-area" onclick="closeAllModals()">×</button>
+        <div class="modal-content detail-view">
+            <div class="detail-container">
+                <div class="detail-photo-frame">
+                    <div class="tape"></div>
+                    <img id="detailImg" src="" alt="">
+                </div>
+                <div class="detail-info">
+                    <h2 id="detailTitle">Title</h2>
+                    <p id="detailCategory">Category</p>
+                    <div class="disqus-wrapper">
+                        <div id="disqus_thread"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="grain-overlay"></div>
-
-    <header>
-        <nav>
-            <div class="logo">231</div>
-            <ul class="nav-links">
-                <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#guestbook">Guestbook</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Capturing the <span>Essence</span> of Silence</h1>
-                <p>A curated collection of moments, light, and shadows.</p>
-            </div>
-        </section>
-
-        <!-- Analog Gallery Container -->
-        <section id="gallery" class="analog-gallery-container reveal">
-            <div class="analog-controls">
-                <button class="analog-btn active" id="btnSlide" onclick="setAnalogMode('slide')">SLIDE</button>
-                <button class="analog-btn" id="btnBoard" onclick="setAnalogMode('board')">BOARD</button>
-            </div>
-
-            <button class="analog-nav-btn analog-prev" onclick="moveAnalogSlide(-1)">&#10092;</button>
-            <button class="analog-nav-btn analog-next" onclick="moveAnalogSlide(1)">&#10093;</button>
-
-            <div class="analog-viewport" id="analogViewport">
-                <div class="analog-track mode-slide" id="analogTrack">
-                    <!-- Polaroids will be injected here by JavaScript -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Selected Photo Detail View -->
-        <section id="photo-detail" class="photo-detail" style="display: none;">
-            <div class="detail-container">
-                <button class="close-detail">&times; Close</button>
-                <div class="detail-content">
-                    <img id="detail-img" src="" alt="">
-                    <div class="detail-info">
-                        <h2 id="detail-title"></h2>
-                        <p id="detail-category"></p>
-                        <div class="detail-comments">
-                            <div id="disqus_thread"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="guestbook" class="guestbook">
-            <div class="guestbook-container">
-                <h2>Guestbook</h2>
-                <p>소중한 방문 소감을 남겨주세요.</p>
-                <form id="guestbook-form" class="guestbook-form">
-                    <div class="form-group">
-                        <label for="gb-name">성함</label>
-                        <input type="text" id="gb-name" name="name" placeholder="성함을 입력해주세요" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gb-message">내용</label>
-                        <textarea id="gb-message" name="message" rows="3" placeholder="방명록 내용을 입력해주세요" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">방명록 남기기</button>
-                </form>
-                <div id="guestbook-entries" class="guestbook-entries"></div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact">
-            <div class="contact-container">
-                <h2>Partnership Inquiry</h2>
-                <p>제휴 및 협업 제안을 남겨주시면 검토 후 연락드리겠습니다.</p>
-                <form action="https://formspree.io/f/mqeypbgy" method="POST">
-                    <div class="form-group">
-                        <label for="name">성함</label>
-                        <input type="text" id="name" name="name" placeholder="성함을 입력해주세요" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">이메일 주소</label>
-                        <input type="email" id="email" name="_replyto" placeholder="example@domain.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">문의 내용</label>
-                        <textarea id="message" name="message" rows="5" placeholder="제휴 제안 내용을 상세히 입력해주세요" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">문의 보내기</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2026 231. All Rights Reserved.</p>
-            <div class="socials">
-                <a href="https://www.instagram.com/231pic/" target="_blank">Instagram</a>
-                <a href="#">VSCO</a>
+    <!-- About 모달 -->
+    <div id="aboutModal" class="modal-overlay">
+        <button class="modal-close hovered-area" onclick="closeAllModals()">×</button>
+        <div class="modal-content info-card">
+            <h2>The Visual Archive</h2>
+            <div class="line"></div>
+            <p>시선이 머무는 찰나의 순간을 기록합니다.<br>231PIC, Seoul.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/231pic/" target="_blank" class="contact-btn hovered-area">INSTAGRAM</a>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- 방명록 모달 -->
+    <div id="guestbookModal" class="modal-overlay">
+        <button class="modal-close hovered-area" onclick="closeAllModals()">×</button>
+        <div class="modal-content info-card">
+            <h2>Guestbook</h2>
+            <div class="line"></div>
+            <form id="guestbook-form" class="museum-form">
+                <input type="text" id="gb-name" placeholder="NAME" required>
+                <textarea id="gb-message" placeholder="MESSAGE" rows="3" required></textarea>
+                <button type="submit" class="contact-btn hovered-area">LEAVE A NOTE</button>
+            </form>
+            <div id="guestbook-entries" class="museum-entries"></div>
+        </div>
+    </div>
+
+    <!-- Contact 모달 -->
+    <div id="contactModal" class="modal-overlay">
+        <button class="modal-close hovered-area" onclick="closeAllModals()">×</button>
+        <div class="modal-content info-card">
+            <h2>Get in Touch</h2>
+            <div class="line"></div>
+            <p>제휴 및 협업 제안을 남겨주세요.</p>
+            <form action="https://formspree.io/f/mqeypbgy" method="POST" class="museum-form">
+                <input type="text" name="name" placeholder="NAME" required>
+                <input type="email" name="_replyto" placeholder="EMAIL" required>
+                <textarea name="message" placeholder="MESSAGE" rows="4" required></textarea>
+                <button type="submit" class="contact-btn hovered-area">SEND EMAIL</button>
+            </form>
+        </div>
+    </div>
 
     <script src="main.js"></script>
     <script>

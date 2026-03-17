@@ -7,81 +7,163 @@ const photos = [
     { id: 'photo-6', url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=1000', title: 'Golden Hour', category: 'Architecture' }
 ];
 
-let currentSlideIndex = 0;
-let currentMode = 'slide';
+let currentSlide = 0;
+let isGridMode = false;
+let slideInterval;
 
-function initGallery() {
-    const galleryTrack = document.getElementById('analogTrack');
-    if (!galleryTrack) return;
+/* 초기화 */
+function init() {
+    initCursor();
+    initPreloader();
+    initGallery();
+    initGuestbook();
+    setViewMode('slider');
+}
 
-    galleryTrack.innerHTML = '';
-    photos.forEach((photo) => {
-        const slide = document.createElement('div');
-        slide.className = 'analog-slide';
-        
-        slide.innerHTML = `
-            <div class="analog-polaroid">
-                <div class="analog-tape"></div>
-                <img src="${photo.url}" alt="${photo.title}" onload="this.classList.add('loaded')">
-                <div class="analog-caption">${photo.title}</div>
-            </div>
-        `;
-        
-        slide.querySelector('.analog-polaroid').addEventListener('click', () => openPhotoDetail(photo));
-        galleryTrack.appendChild(slide);
+/* 커스텀 커서 */
+function initCursor() {
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest('.hovered-area')) {
+            cursor.classList.add('hovered');
+            cursor.innerText = 'View';
+        }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest('.hovered-area')) {
+            cursor.classList.remove('hovered');
+            cursor.innerText = '';
+        }
     });
 }
 
-window.setAnalogMode = function(mode) {
-    currentMode = mode;
-    const viewport = document.getElementById('analogViewport');
-    const track = document.getElementById('analogTrack');
-    const btnSlide = document.getElementById('btnSlide');
-    const btnBoard = document.getElementById('btnBoard');
-    const navBtns = document.querySelectorAll('.analog-nav-btn');
+/* 프리로더 */
+function initPreloader() {
+    const preloader = document.getElementById('preloader');
+    const progressText = document.getElementById('progressText');
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 15) + 2;
+        if (progress >= 99) {
+            progress = 99;
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 1000);
+            }, 500);
+        }
+        progressText.innerText = progress.toString().padStart(2, '0');
+    }, 50);
+}
 
-    if (mode === 'slide') {
-        viewport.classList.remove('is-board');
-        track.classList.remove('is-board');
-        btnSlide.classList.add('active');
-        btnBoard.classList.remove('active');
-        navBtns.forEach(btn => btn.style.display = 'block');
-        updateSlidePosition();
+/* 갤러리 생성 */
+function initGallery() {
+    const track = document.getElementById('sliderTrack');
+    track.innerHTML = '';
+    
+    photos.forEach((photo, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide hovered-area';
+        slide.innerHTML = `
+            <div class="polaroid">
+                <div class="tape"></div>
+                <img src="${photo.url}" alt="${photo.title}" onload="this.classList.add('loaded')">
+                <div class="polaroid-caption">${photo.title}</div>
+            </div>
+        `;
+        slide.addEventListener('click', () => openPhotoDetail(photo));
+        track.appendChild(slide);
+    });
+}
+
+/* 뷰 모드 전환 */
+window.setViewMode = function(mode) {
+    const viewport = document.getElementById('viewport');
+    const track = document.getElementById('sliderTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const btnSlider = document.getElementById('btnSlider');
+    const btnGrid = document.getElementById('btnGrid');
+
+    if (mode === 'grid') {
+        isGridMode = true;
+        viewport.classList.add('grid-mode');
+        track.classList.add('grid-mode');
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        btnSlider.classList.remove('active');
+        btnGrid.classList.add('active');
+        clearInterval(slideInterval);
     } else {
-        viewport.classList.add('is-board');
-        track.classList.add('is-board');
-        btnBoard.classList.add('active');
-        btnSlide.classList.remove('active');
-        navBtns.forEach(btn => btn.style.display = 'none');
-        track.style.transform = 'none';
+        isGridMode = false;
+        viewport.classList.remove('grid-mode');
+        track.classList.remove('grid-mode');
+        prevBtn.style.display = 'block';
+        nextBtn.style.display = 'block';
+        btnSlider.classList.add('active');
+        btnGrid.classList.remove('active');
+        updateSlider();
+        startAutoSlide();
     }
 }
 
-window.moveAnalogSlide = function(direction) {
-    if (currentMode !== 'slide') return;
-    currentSlideIndex += direction;
-    if (currentSlideIndex < 0) currentSlideIndex = photos.length - 1;
-    if (currentSlideIndex >= photos.length) currentSlideIndex = 0;
-    updateSlidePosition();
+/* 슬라이더 제어 */
+window.changeSlide = function(dir) {
+    if (isGridMode) return;
+    currentSlide = (currentSlide + dir + photos.length) % photos.length;
+    updateSlider();
+    resetAutoSlide();
 }
 
-function updateSlidePosition() {
-    const track = document.getElementById('analogTrack');
-    const offset = -currentSlideIndex * 100;
-    track.style.transform = `translateX(${offset}%)`;
-}
-
-function openPhotoDetail(photo) {
-    const detailSection = document.getElementById('photo-detail');
-    const detailImg = document.getElementById('detail-img');
-    const detailTitle = document.getElementById('detail-title');
-    const detailCategory = document.getElementById('detail-category');
-
-    detailImg.src = photo.url;
-    detailTitle.textContent = photo.title;
-    detailCategory.textContent = photo.category;
-    detailSection.style.display = 'flex';
+function updateSlider() {
+    const track = document.getElementById('sliderTrack');
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
     
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach((s, i) => {
+        if (i === currentSlide) s.classList.add('active');
+        else s.classList.remove('active');
+    });
+}
+
+function startAutoSlide() {
+    slideInterval = setInterval(() => changeSlide(1), 5000);
+}
+
+function resetAutoSlide() {
+    clearInterval(slideInterval);
+    startAutoSlide();
+}
+
+/* 모달 제어 */
+window.openModal = function(id) {
+    closeAllModals();
+    document.getElementById(id).classList.add('active');
+}
+
+window.closeAllModals = function() {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+}
+
+/* 사진 상세 및 댓글 */
+function openPhotoDetail(photo) {
+    const modal = document.getElementById('photoDetailModal');
+    const img = document.getElementById('detailImg');
+    const title = document.getElementById('detailTitle');
+    const category = document.getElementById('detailCategory');
+
+    img.src = photo.url;
+    title.innerText = photo.title;
+    category.innerText = photo.category;
+    
+    modal.classList.add('active');
+
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
             reload: true,
@@ -94,58 +176,43 @@ function openPhotoDetail(photo) {
     }
 }
 
-document.querySelector('.close-detail')?.addEventListener('click', () => {
-    document.getElementById('photo-detail').style.display = 'none';
-});
-
+/* 방명록 */
 function initGuestbook() {
     const form = document.getElementById('guestbook-form');
-    const entriesContainer = document.getElementById('guestbook-entries');
-    let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
+    const container = document.getElementById('guestbook-entries');
     
-    function renderEntries() {
-        entriesContainer.innerHTML = entries.map(entry => `
-            <div class="gb-entry">
-                <strong>${entry.name}</strong>
-                <p>${entry.message}</p>
-                <small>${new Date(entry.date).toLocaleString()}</small>
+    function render() {
+        let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
+        container.innerHTML = entries.map(e => `
+            <div class="gb-entry" style="margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;">
+                <strong style="color: #fff; font-size: 0.8rem;">${e.name}</strong>
+                <p style="color: #ccc; font-size: 0.95rem; margin: 5px 0;">${e.message}</p>
+                <small style="color: #444; font-size: 0.7rem;">${new Date(e.date).toLocaleString()}</small>
             </div>
         `).reverse().join('');
     }
 
-    form?.addEventListener('submit', (e) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('gb-name').value;
         const message = document.getElementById('gb-message').value;
-        const newEntry = { name, message, date: new Date().toISOString() };
-        entries.push(newEntry);
+        let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
+        entries.push({ name, message, date: new Date().toISOString() });
         localStorage.setItem('guestbook_entries', JSON.stringify(entries));
         form.reset();
-        renderEntries();
+        render();
     });
 
-    renderEntries();
+    render();
 }
 
-window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    setTimeout(() => {
-        loader.classList.add('hidden');
-    }, 1200);
+/* BGM (UI만) */
+const bgmAudio = document.createElement('audio'); // 오디오 객체 생성만 해둠
+const bgmToggle = document.getElementById('bgmToggle');
+let isPlaying = false;
+bgmToggle?.addEventListener('click', () => {
+    isPlaying = !isPlaying;
+    bgmToggle.innerText = isPlaying ? 'PAUSE SOUND' : 'PLAY SOUND';
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    initGallery();
-    initGuestbook();
-    setAnalogMode('slide');
-});
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
+document.addEventListener('DOMContentLoaded', init);
