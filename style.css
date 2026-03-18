@@ -228,14 +228,20 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
     overflow-y: auto; /* 댓글이 길어지면 내부 스크롤 */
 }
 
+/* 방명록 엔트리 가독성 개선 (흰색 -> 짙은색) */
+.gb-entry { margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px; text-align: left; }
+.gb-entry strong { color: #333; font-size: 0.85rem; display: block; margin-bottom: 4px; }
+.gb-entry p { color: #555; font-size: 1rem; line-height: 1.5; margin: 5px 0; word-break: break-all; }
+.gb-entry small { color: #999; font-size: 0.7rem; font-family: 'Playfair Display', serif; }
+
 /* 방명록 입력 폼 */
 .museum-form { margin-bottom: 40px; }
 .museum-form input, .museum-form textarea { 
-    width: 100%; background: rgba(255,255,255,0.4); border: none; border-bottom: 1px solid var(--accent-beige); 
-    color: var(--text-primary); padding: 15px; margin-bottom: 20px; outline: none; transition: 0.4s; font-family: inherit;
+    width: 100%; background: rgba(0,0,0,0.03); border: none; border-bottom: 1px solid var(--accent-beige); 
+    color: #222; padding: 15px; margin-bottom: 20px; outline: none; transition: 0.4s; font-family: inherit;
 }
-.museum-form input:focus, .museum-form textarea:focus { border-bottom-color: var(--text-primary); background: #fff; }
-.museum-entries { text-align: left; max-height: 350px; overflow-y: auto; padding-right: 15px; }
+.museum-form input:focus, .museum-form textarea:focus { border-bottom-color: #222; background: rgba(0,0,0,0.01); }
+.museum-entries { text-align: left; max-height: 400px; overflow-y: auto; padding-right: 15px; }
 .museum-entries::-webkit-scrollbar { width: 2px; }
 .museum-entries::-webkit-scrollbar-thumb { background: var(--accent-beige); }
 

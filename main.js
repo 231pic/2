@@ -207,10 +207,10 @@ function initGuestbook() {
     function render() {
         let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
         container.innerHTML = entries.map(e => `
-            <div class="gb-entry" style="margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;">
-                <strong style="color: #fff; font-size: 0.8rem;">${e.name}</strong>
-                <p style="color: #ccc; font-size: 0.95rem; margin: 5px 0;">${e.message}</p>
-                <small style="color: #444; font-size: 0.7rem;">${new Date(e.date).toLocaleString()}</small>
+            <div class="gb-entry">
+                <strong>${e.name}</strong>
+                <p>${e.message}</p>
+                <small>${new Date(e.date).toLocaleString()}</small>
             </div>
         `).reverse().join('');
     }
