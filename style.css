@@ -25,18 +25,23 @@ body {
     overscroll-behavior-y: none;
 }
 
-/* 더 구깃구깃하고 질감이 강하게 느껴지는 페이퍼 텍스처 */
+/* 더 구깃구깃하고 입체감이 강하게 느껴지는 접힌 종이(Folds/Wrinkles) 텍스처 */
 .film-grain { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     pointer-events: none; z-index: 1; 
     background-image: 
-        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), /* 구겨진 질감 */
-        url("https://www.transparenttextures.com/patterns/pinstriped-suit.png"), /* 미세한 가로세로 결 추가 */
-        url("https://www.transparenttextures.com/patterns/handmade-paper.png"), /* 종이 섬유질 */
-        radial-gradient(circle at 20% 30%, rgba(0,0,0,0.03) 0%, transparent 50%), 
-        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.15) 0%, transparent 50%);
-    opacity: 0.9; /* 질감이 더 잘 보이도록 불투명도 조절 */
-    mix-blend-mode: multiply;
+        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), /* 큰 구김과 접힌 자국 */
+        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), /* 세밀한 잔구김 */
+        url("https://www.transparenttextures.com/patterns/handmade-paper.png"), /* 종이 섬유질 질감 */
+        linear-gradient(135deg, rgba(0,0,0,0.01) 0%, transparent 50%, rgba(0,0,0,0.01) 100%); /* 입체적인 접힘 명암 */
+    
+    /* 각 레이어의 크기를 다르게 설정하여 중첩된 입체감 생성 */
+    background-size: 1200px 1200px, 500px 500px, auto, 100% 100%;
+    background-position: center, 10% 20%, top left, center;
+    
+    opacity: 1; /* 질감이 생생하게 보이도록 완전 투명도 적용 */
+    mix-blend-mode: multiply; /* 배경색과 자연스럽게 합성 */
+    filter: contrast(1.1) brightness(1.02); /* 질감의 대비를 높여 더 '구깃'하게 표현 */
 }
 
 /* 커스텀 커서 */
