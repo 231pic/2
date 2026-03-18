@@ -1,4 +1,5 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* 기본 커서 복구: 모든 환경에서 시스템 마우스가 보이도록 설정 */
+* { cursor: auto; }
 
 :root {
     --bg-color: #FEFDF0; /* 요청하신 더 밝고 따뜻한 베이지 색상 */
@@ -13,46 +14,35 @@ body {
     color: var(--text-primary); 
     overflow: hidden; 
     overscroll-behavior-y: none;
+    cursor: default;
 }
 
-/* 진짜 구겨진 종이(Crumpled/Folded) 질감 극대화 - 빗금 제거 */
-.film-grain { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    pointer-events: none; z-index: 1; 
-    background-image: 
-        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), 
-        url("https://www.transparenttextures.com/patterns/paper-fibers.png");
-    background-size: 800px 800px, auto;
-    opacity: 0.8;
-    mix-blend-mode: multiply;
-    filter: contrast(1.1) brightness(1.02);
-}
-
-/* 커스텀 커서: PC 환경에서 확실히 보이도록 기본 display 설정 변경 */
+/* 커스텀 커서: 시스템 커서를 따라다니는 시각적 효과로 변경 */
 .custom-cursor { 
-    position: fixed; top: 0; left: 0; width: 12px; height: 12px; 
-    border: 1px solid rgba(0,0,0,0.4); border-radius: 50%; 
+    position: fixed; top: 0; left: 0; width: 20px; height: 20px; 
+    border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; 
     pointer-events: none; transform: translate(-50%, -50%); 
-    transition: width 0.3s, height 0.3s, background 0.3s; 
-    z-index: 99999; mix-blend-mode: difference; 
-    display: flex; align-items: center; justify-content: center; 
-    color: #fff; font-family: 'Playfair Display', serif; font-size: 10px; font-style: italic; 
+    transition: width 0.3s, height 0.3s, background 0.3s, border 0.3s; 
+    z-index: 99999; mix-blend-mode: multiply; 
+    display: none; align-items: center; justify-content: center; 
+    color: #222; font-family: 'Playfair Display', serif; font-size: 10px; font-style: italic; 
 }
-.custom-cursor.hovered { width: 70px; height: 70px; background: rgba(0,0,0,0.85); border: none; mix-blend-mode: normal; }
+.custom-cursor.hovered { 
+    width: 80px; height: 80px; 
+    background: rgba(0,0,0,0.05); 
+    border: 1px solid rgba(0,0,0,0.1);
+}
 
-/* PC 환경에서만 기본 커서 숨김 */
+/* 마우스가 있는 환경에서만 커스텀 커서 장식 표시 */
 @media (hover: hover) and (pointer: fine) {
-    * { cursor: none; }
     .custom-cursor { display: flex; }
+    .hovered-area { cursor: pointer; }
 }
 
-/* 모달 및 폼 요소에서는 커서 보이기 */
-.modal-overlay *, .museum-form * { cursor: auto !important; }
-
-/* 모바일에서는 커스텀 커서 숨김 */
+/* 모바일/터치 환경에서는 커스텀 커서 숨김 */
 @media (hover: none), (pointer: coarse) {
-    * { cursor: auto; }
     .custom-cursor { display: none !important; }
+    * { cursor: auto !important; }
 }
 
 /* 로딩 스크린 */
