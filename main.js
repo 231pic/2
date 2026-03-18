@@ -26,13 +26,7 @@ function init() {
 
 function initCursor() {
     const cursor = document.getElementById('cursor');
-    // Detect if device is touch-enabled
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
-    if (isTouchDevice) {
-        if (cursor) cursor.style.display = 'none';
-        return;
-    }
+    if (!cursor) return;
 
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';

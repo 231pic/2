@@ -1,15 +1,5 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-@media (hover: hover) and (pointer: fine) {
-    * { cursor: none; }
-    .custom-cursor { display: flex; }
-}
-
-@media (hover: none), (pointer: coarse) {
-    * { cursor: auto; }
-    .custom-cursor { display: none !important; }
-}
-
 :root {
     --bg-color: #FEFDF0; /* 요청하신 더 밝고 따뜻한 베이지 색상 */
     --text-primary: #222;
@@ -25,36 +15,45 @@ body {
     overscroll-behavior-y: none;
 }
 
-/* 더 구깃구깃하고 입체감이 강하게 느껴지는 접힌 종이(Folds/Wrinkles) 텍스처 */
+/* 진짜 구겨진 종이(Crumpled/Folded) 질감 극대화 - 빗금 제거 */
 .film-grain { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     pointer-events: none; z-index: 1; 
     background-image: 
-        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), /* 큰 구김과 접힌 자국 */
-        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), /* 세밀한 잔구김 */
-        url("https://www.transparenttextures.com/patterns/handmade-paper.png"), /* 종이 섬유질 질감 */
-        linear-gradient(135deg, rgba(0,0,0,0.01) 0%, transparent 50%, rgba(0,0,0,0.01) 100%); /* 입체적인 접힘 명암 */
-    
-    /* 각 레이어의 크기를 다르게 설정하여 중첩된 입체감 생성 */
-    background-size: 1200px 1200px, 500px 500px, auto, 100% 100%;
-    background-position: center, 10% 20%, top left, center;
-    
-    opacity: 1; /* 질감이 생생하게 보이도록 완전 투명도 적용 */
-    mix-blend-mode: multiply; /* 배경색과 자연스럽게 합성 */
-    filter: contrast(1.1) brightness(1.02); /* 질감의 대비를 높여 더 '구깃'하게 표현 */
+        url("https://www.transparenttextures.com/patterns/crushed-paper.png"), 
+        url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+    background-size: 800px 800px, auto;
+    opacity: 0.8;
+    mix-blend-mode: multiply;
+    filter: contrast(1.1) brightness(1.02);
 }
 
-/* 커스텀 커서 */
+/* 커스텀 커서: PC 환경에서 확실히 보이도록 기본 display 설정 변경 */
 .custom-cursor { 
     position: fixed; top: 0; left: 0; width: 12px; height: 12px; 
     border: 1px solid rgba(0,0,0,0.4); border-radius: 50%; 
     pointer-events: none; transform: translate(-50%, -50%); 
     transition: width 0.3s, height 0.3s, background 0.3s; 
     z-index: 99999; mix-blend-mode: difference; 
-    display: none; align-items: center; justify-content: center; 
+    display: flex; align-items: center; justify-content: center; 
     color: #fff; font-family: 'Playfair Display', serif; font-size: 10px; font-style: italic; 
 }
 .custom-cursor.hovered { width: 70px; height: 70px; background: rgba(0,0,0,0.85); border: none; mix-blend-mode: normal; }
+
+/* PC 환경에서만 기본 커서 숨김 */
+@media (hover: hover) and (pointer: fine) {
+    * { cursor: none; }
+    .custom-cursor { display: flex; }
+}
+
+/* 모달 및 폼 요소에서는 커서 보이기 */
+.modal-overlay *, .museum-form * { cursor: auto !important; }
+
+/* 모바일에서는 커스텀 커서 숨김 */
+@media (hover: none), (pointer: coarse) {
+    * { cursor: auto; }
+    .custom-cursor { display: none !important; }
+}
 
 /* 로딩 스크린 */
 #preloader { 
@@ -257,4 +256,3 @@ footer { padding: 80px 60px; text-align: center; z-index: 5; position: relative;
     .detail-view .detail-container { grid-template-columns: 1fr; }
     .detail-photo-frame { max-height: none; }
 }
-
