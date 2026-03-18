@@ -1,4 +1,14 @@
-* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+@media (hover: hover) and (pointer: fine) {
+    * { cursor: none; }
+    .custom-cursor { display: flex; }
+}
+
+@media (hover: none), (pointer: coarse) {
+    * { cursor: auto; }
+    .custom-cursor { display: none !important; }
+}
 
 :root {
     --bg-color: #dfdbd2; /* 깊이감 있는 세련된 베이지 */
@@ -12,6 +22,7 @@ body {
     font-family: 'Noto Sans KR', sans-serif; 
     color: var(--text-primary); 
     overflow: hidden; 
+    overscroll-behavior-y: none;
 }
 
 /* 불규칙한 세련된 페이퍼 텍스처 */
@@ -34,7 +45,7 @@ body {
     pointer-events: none; transform: translate(-50%, -50%); 
     transition: width 0.3s, height 0.3s, background 0.3s; 
     z-index: 99999; mix-blend-mode: difference; 
-    display: flex; align-items: center; justify-content: center; 
+    display: none; align-items: center; justify-content: center; 
     color: #fff; font-family: 'Playfair Display', serif; font-size: 10px; font-style: italic; 
 }
 .custom-cursor.hovered { width: 70px; height: 70px; background: rgba(0,0,0,0.85); border: none; mix-blend-mode: normal; }
@@ -107,6 +118,29 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
 .nav-btn:hover { color: var(--text-primary); transform: translateY(-50%) scale(1.2); }
 .prev-btn { left: 30px; }
 .next-btn { right: 30px; }
+
+@media (max-width: 768px) {
+    nav { padding: 20px 30px; }
+    .logo { font-size: 1.5rem; }
+    .menu { gap: 15px; }
+    .menu button { font-size: 0.7rem; letter-spacing: 1px; }
+
+    .polaroid { width: 85vw; max-width: 320px; padding: 10px 10px 45px 10px; }
+    .polaroid img { max-height: 50vh; }
+    
+    .nav-btn { font-size: 1.8rem; padding: 10px; color: rgba(0,0,0,0.3); }
+    .prev-btn { left: 5px; }
+    .next-btn { right: 5px; }
+
+    .view-controls { left: 30px; bottom: 30px; }
+    .bgm-player { right: 30px; bottom: 30px; }
+    
+    .info-card h2 { font-size: 2rem; }
+    .detail-info h2 { font-size: 1.8rem; }
+    
+    .slider-viewport.grid-mode { padding: 100px 20px; }
+    .slider-track.grid-mode { gap: 40px 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+}
 
 /* BGM */
 .bgm-player { position: fixed; bottom: 40px; right: 60px; z-index: 30; display: flex; align-items: center; gap: 15px; }
@@ -189,8 +223,8 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
 
 footer { padding: 80px 60px; text-align: center; z-index: 5; position: relative; }
 .footer-content p { font-size: 0.7rem; letter-spacing: 2px; color: #999; }
-
 @media (max-width: 1024px) {
     .detail-view .detail-container { grid-template-columns: 1fr; }
     .detail-photo-frame { max-height: none; }
 }
+

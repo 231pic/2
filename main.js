@@ -26,6 +26,14 @@ function init() {
 
 function initCursor() {
     const cursor = document.getElementById('cursor');
+    // Detect if device is touch-enabled
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (isTouchDevice) {
+        if (cursor) cursor.style.display = 'none';
+        return;
+    }
+
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
@@ -79,6 +87,29 @@ function initGallery() {
         slide.addEventListener('click', () => openPhotoDetail(photo));
         track.appendChild(slide);
     });
+
+    // Touch events for slider
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+        if (isGridMode) return;
+        const swipeThreshold = 50;
+        if (touchStartX - touchEndX > swipeThreshold) {
+            changeSlide(1); // Swipe left -> next slide
+        } else if (touchEndX - touchStartX > swipeThreshold) {
+            changeSlide(-1); // Swipe right -> prev slide
+        }
+    }
 }
 
 window.setViewMode = function(mode) {
