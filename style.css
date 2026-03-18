@@ -11,7 +11,7 @@
 }
 
 :root {
-    --bg-color: #dfdbd2; /* 깊이감 있는 세련된 베이지 */
+    --bg-color: #f4f1ea; /* 좀 더 밝고 화사한 베이지 종이색 */
     --text-primary: #222;
     --accent-beige: #8e8879;
     --glass-border: rgba(0, 0, 0, 0.08);
@@ -125,6 +125,7 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
     .menu { gap: 15px; }
     .menu button { font-size: 0.7rem; letter-spacing: 1px; }
 
+    /* 슬라이드 모드에서의 폴라로이드 크기 */
     .polaroid { width: 85vw; max-width: 320px; padding: 10px 10px 45px 10px; }
     .polaroid img { max-height: 50vh; }
     
@@ -132,14 +133,31 @@ main { width: 100vw; height: 100vh; position: relative; z-index: 5; }
     .prev-btn { left: 5px; }
     .next-btn { right: 5px; }
 
-    .view-controls { left: 30px; bottom: 30px; }
-    .bgm-player { right: 30px; bottom: 30px; }
+    .view-controls { left: 20px; bottom: 20px; }
+    
+    /* 모바일에서 BGM 버튼 더 작게 */
+    .bgm-player { right: 20px; bottom: 20px; gap: 8px; }
+    .bgm-line { width: 15px; }
+    .bgm-btn { font-size: 0.6rem; opacity: 0.6; }
+    .bgm-btn:first-child { display: none; } /* LO-FI VIBE 텍스트 숨김 */
     
     .info-card h2 { font-size: 2rem; }
     .detail-info h2 { font-size: 1.8rem; }
     
-    .slider-viewport.grid-mode { padding: 100px 20px; }
-    .slider-track.grid-mode { gap: 40px 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    /* 그리드 모드 최적화: 2열로 더 많이 보이게 */
+    .slider-viewport.grid-mode { padding: 80px 15px; }
+    .slider-track.grid-mode { 
+        gap: 30px 15px; 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .slider-track.grid-mode .slide { padding: 0; }
+    .slider-track.grid-mode .polaroid { 
+        width: 100%; 
+        padding: 8px 8px 30px 8px; 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    .slider-track.grid-mode .polaroid-caption { font-size: 0.6rem; bottom: 10px; }
+    .slider-track.grid-mode .tape { width: 60px; height: 18px; top: -8px; }
 }
 
 /* BGM */

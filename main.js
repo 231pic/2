@@ -6,7 +6,7 @@ for (let i = 1; i <= 17; i++) {
         // 파일명에 공백과 괄호가 포함된 경우를 위해 URL 인코딩 처리를 고려합니다.
         // 일부 파일이 .JPG(대문자)로 되어 있는 경우를 위해 조건부로 경로를 생성합니다.
         url: (i === 14) ? `pic (${i}).JPG` : `pic (${i}).jpg`, 
-        title: `Archive ${String(i).padStart(2, '0')}`,
+        title: `Shot on A7M3`,
         category: 'Exhibition'
     });
 }
