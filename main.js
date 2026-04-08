@@ -3,8 +3,6 @@ const photos = [];
 for (let i = 1; i <= 17; i++) {
     photos.push({
         id: `photo-${i}`,
-        // 파일명에 공백과 괄호가 포함된 경우를 위해 URL 인코딩 처리를 고려합니다.
-        // 일부 파일이 .JPG(대문자)로 되어 있는 경우를 위해 조건부로 경로를 생성합니다.
         url: (i === 14) ? `pic (${i}).JPG` : `pic (${i}).jpg`, 
         title: `Shot on A7M3`,
         category: 'Exhibition'
@@ -14,14 +12,73 @@ for (let i = 1; i <= 17; i++) {
 let currentSlide = 0;
 let isGridMode = false;
 let slideInterval;
+let database;
+
+// Firebase 설정 (사용자 정보로 교체 필요)
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "231pic-2.firebaseapp.com",
+    databaseURL: "https://231pic-2-default-rtdb.firebaseio.com",
+    projectId: "231pic-2",
+    storageBucket: "231pic-2.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
 
 function init() {
+    initFirebase();
     initCursor();
     initPreloader();
     initGallery();
     initGuestbook();
-    initBGM(); // BGM 기능 초기화
+    initBGM(); 
+    initDarkMode();
+    initKeyboardNav();
     setViewMode('slider');
+}
+
+function initFirebase() {
+    try {
+        if (typeof firebase !== 'undefined') {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+        }
+    } catch (e) {
+        console.error("Firebase initialization failed:", e);
+    }
+}
+
+function initKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+        // 모달이 열려있을 때 ESC로 닫기
+        if (e.key === 'Escape') {
+            closeAllModals();
+            return;
+        }
+
+        // 슬라이드 모드일 때 화살표 키 네비게이션
+        if (!isGridMode) {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        }
+    });
+}
+
+function initDarkMode() {
+    const toggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        body.classList.add('dark-mode');
+        if (toggle) toggle.innerText = 'LIGHTS ON';
+    }
+
+    toggle?.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        const isDark = body.classList.contains('dark-mode');
+        toggle.innerText = isDark ? 'LIGHTS ON' : 'LIGHTS OFF';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    });
 }
 
 function initCursor() {
@@ -66,6 +123,7 @@ function initPreloader() {
 
 function initGallery() {
     const track = document.getElementById('sliderTrack');
+    if (!track) return;
     track.innerHTML = '';
     
     photos.forEach((photo) => {
@@ -82,14 +140,11 @@ function initGallery() {
         track.appendChild(slide);
     });
 
-    // Touch events for slider
     let touchStartX = 0;
     let touchEndX = 0;
-
     track.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
-
     track.addEventListener('touchend', (e) => {
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
@@ -98,11 +153,8 @@ function initGallery() {
     function handleSwipe() {
         if (isGridMode) return;
         const swipeThreshold = 50;
-        if (touchStartX - touchEndX > swipeThreshold) {
-            changeSlide(1); // Swipe left -> next slide
-        } else if (touchEndX - touchStartX > swipeThreshold) {
-            changeSlide(-1); // Swipe right -> prev slide
-        }
+        if (touchStartX - touchEndX > swipeThreshold) changeSlide(1);
+        else if (touchEndX - touchStartX > swipeThreshold) changeSlide(-1);
     }
 }
 
@@ -116,21 +168,21 @@ window.setViewMode = function(mode) {
 
     if (mode === 'grid') {
         isGridMode = true;
-        viewport.classList.add('grid-mode');
-        track.classList.add('grid-mode');
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
-        btnSlider.classList.remove('active');
-        btnGrid.classList.add('active');
+        viewport?.classList.add('grid-mode');
+        track?.classList.add('grid-mode');
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        btnSlider?.classList.remove('active');
+        btnGrid?.classList.add('active');
         clearInterval(slideInterval);
     } else {
         isGridMode = false;
-        viewport.classList.remove('grid-mode');
-        track.classList.remove('grid-mode');
-        prevBtn.style.display = 'block';
-        nextBtn.style.display = 'block';
-        btnSlider.classList.add('active');
-        btnGrid.classList.remove('active');
+        viewport?.classList.remove('grid-mode');
+        track?.classList.remove('grid-mode');
+        if (prevBtn) prevBtn.style.display = 'block';
+        if (nextBtn) nextBtn.style.display = 'block';
+        btnSlider?.classList.add('active');
+        btnGrid?.classList.remove('active');
         updateSlider();
         startAutoSlide();
     }
@@ -145,6 +197,7 @@ window.changeSlide = function(dir) {
 
 function updateSlider() {
     const track = document.getElementById('sliderTrack');
+    if (!track) return;
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
     const slides = document.querySelectorAll('.slide');
     slides.forEach((s, i) => {
@@ -154,17 +207,17 @@ function updateSlider() {
 }
 
 function startAutoSlide() {
+    clearInterval(slideInterval);
     slideInterval = setInterval(() => changeSlide(1), 5000);
 }
 
 function resetAutoSlide() {
-    clearInterval(slideInterval);
     startAutoSlide();
 }
 
 window.openModal = function(id) {
     closeAllModals();
-    document.getElementById(id).classList.add('active');
+    document.getElementById(id)?.classList.add('active');
 }
 
 window.closeAllModals = function() {
@@ -177,11 +230,11 @@ function openPhotoDetail(photo) {
     const title = document.getElementById('detailTitle');
     const category = document.getElementById('detailCategory');
 
-    img.src = encodeURIComponent(photo.url);
-    title.innerText = photo.title;
-    category.innerText = photo.category;
+    if (img) img.src = encodeURIComponent(photo.url);
+    if (title) title.innerText = photo.title;
+    if (category) category.innerText = photo.category;
     
-    modal.classList.add('active');
+    modal?.classList.add('active');
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
@@ -198,30 +251,54 @@ function openPhotoDetail(photo) {
 function initGuestbook() {
     const form = document.getElementById('guestbook-form');
     const container = document.getElementById('guestbook-entries');
-    function render() {
-        let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
-        container.innerHTML = entries.map(e => `
-            <div class="gb-entry">
-                <strong>${e.name}</strong>
-                <p>${e.message}</p>
-                <small>${new Date(e.date).toLocaleString()}</small>
-            </div>
-        `).reverse().join('');
+
+    function render(entriesObj) {
+        let entries = [];
+        if (entriesObj) {
+            entries = Object.values(entriesObj);
+        } else {
+            entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
+        }
+
+        if (container) {
+            container.innerHTML = entries.map(e => `
+                <div class="gb-entry">
+                    <strong>${e.name}</strong>
+                    <p>${e.message}</p>
+                    <small>${new Date(e.date).toLocaleString()}</small>
+                </div>
+            `).reverse().join('');
+        }
     }
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('gb-name').value;
-        const message = document.getElementById('gb-message').value;
-        let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
-        entries.push({ name, message, date: new Date().toISOString() });
-        localStorage.setItem('guestbook_entries', JSON.stringify(entries));
-        form.reset();
+
+    if (database) {
+        database.ref('guestbook').on('value', (snapshot) => {
+            render(snapshot.val());
+        });
+    } else {
         render();
+    }
+
+    form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById('gb-name');
+        const messageInput = document.getElementById('gb-message');
+        const name = nameInput.value;
+        const message = messageInput.value;
+        const entry = { name, message, date: new Date().toISOString() };
+
+        if (database) {
+            database.ref('guestbook').push(entry);
+        } else {
+            let entries = JSON.parse(localStorage.getItem('guestbook_entries') || '[]');
+            entries.push(entry);
+            localStorage.setItem('guestbook_entries', JSON.stringify(entries));
+            render();
+        }
+        form.reset();
     });
-    render();
 }
 
-// BGM 기능 구현
 function initBGM() {
     const bgmAudio = new Audio('lofi.mp3');
     bgmAudio.loop = true;

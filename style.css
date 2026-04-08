@@ -11,7 +11,46 @@
     --text-primary: #222;
     --accent-beige: #8e8879;
     --glass-border: rgba(0, 0, 0, 0.08);
+    --modal-bg: rgba(223, 219, 210, 0.96);
+    --polaroid-bg: #fdfdfd;
 }
+
+/* 다크 모드 변수 */
+body.dark-mode {
+    --bg-color: #121212;
+    --text-primary: #e0e0e0;
+    --accent-beige: #555;
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --modal-bg: rgba(18, 18, 18, 0.98);
+    --polaroid-bg: #1e1e1e;
+}
+
+body.dark-mode .polaroid, 
+body.dark-mode .detail-photo-frame {
+    background: var(--polaroid-bg);
+    box-shadow: 0 25px 55px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .polaroid-caption {
+    color: #aaa;
+}
+
+body.dark-mode .tape {
+    background: rgba(80, 75, 60, 0.4);
+}
+
+body.dark-mode .modal-overlay {
+    background: var(--modal-bg);
+}
+
+body.dark-mode .museum-form input, 
+body.dark-mode .museum-form textarea {
+    background: rgba(255, 255, 255, 0.05);
+    color: #eee;
+}
+
+body.dark-mode .gb-entry strong { color: #eee; }
+body.dark-mode .gb-entry p { color: #ccc; }
 
 html, body {
     width: 100%;

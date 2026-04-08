@@ -20,7 +20,7 @@
 
     <!-- BGM 플레이어 (UI 유지) -->
     <div class="bgm-player">
-        <span class="bgm-btn" style="opacity: 0.3; cursor: default;">LO-FI VIBE</span>
+        <button class="bgm-btn hovered-area" id="darkModeToggle">LIGHTS OFF</button>
         <div class="bgm-line"></div>
         <button class="bgm-btn hovered-area" id="bgmToggle">PLAY SOUND</button>
     </div>
@@ -116,6 +116,8 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="main.js"></script>
     <script>
         var disqus_config = function () {
